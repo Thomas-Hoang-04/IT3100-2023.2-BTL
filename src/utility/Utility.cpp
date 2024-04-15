@@ -352,17 +352,17 @@ std::vector<double> Utility::getPedesVelocityBasedDDis(json inputData,
 {
     vector<double> v;
     float perNoDisabilityWithoutOvertaking =
-        float(inputData["p1"]["value"]) * deviationParam;
+        float(inputData["walkability"]["distribution"]["noDisabilityNoOvertaking"]["velocity"]) * deviationParam;
     float perNoDisabilityWithOvertaking =
-        float(inputData["p2"]["value"]) * deviationParam;
+        float(inputData["walkability"]["distribution"]["noDisabilityOvertaking"]["velocity"]) * deviationParam;
     float perWalkingWithCrutches =
-        float(inputData["p3"]["value"]) * deviationParam;
-    float perWalkingWithSticks = float(inputData["p4"]["value"]) * deviationParam;
-    float perWheelchairs = float(inputData["p5"]["value"]) * deviationParam;
-    // float perTheBlind = inputData["p6"]["value"];
+        float(inputData["walkability"]["distribution"]["crutches"]["velocity"]) * deviationParam;
+    float perWalkingWithSticks = 
+        float(inputData["walkability"]["distribution"]["sticks"]["velocity"]) * deviationParam;
+    float perWheelchairs = 
+        float(inputData["walkability"]["distribution"]["wheelchairs"]["velocity"]) * deviationParam;
     float perTheBlind =
-        100 - (perNoDisabilityWithoutOvertaking + perNoDisabilityWithOvertaking +
-               perWalkingWithCrutches + perWalkingWithSticks + perWheelchairs);
+        float(inputData["walkability"]["distribution"]["blind"]["velocity"]) * deviationParam;
 
     const int nrolls = 10000; // number of experiments
     const int numPedes =
