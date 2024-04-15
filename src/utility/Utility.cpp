@@ -158,12 +158,21 @@ std::map<std::string, std::vector<float>> readHospitalData(
 
             while ((pos = line.find(delimiter)) != std::string::npos) {
                 token = line.substr(0, pos);
-                v.push_back(stof(token));
+                if (lineNo >= 2 && lineNo <= numDepartment + 1) {
+                    if (count < 5) {
+                        v.push_back(stof(token));
+                    } else {
+                        departmentId.assign(token);
+                    }
+                    count++;
+                } else {
+                    v.push_back(stof(token));
+                }
                 line.erase(0, pos + delimiter.length());
             } 
 
             if (lineNo >= 2 && lineNo <= numDepartment + 1) {
-                int count = 0;
+                map[departmentId] = v;
             } else if (lineNo == numDepartment + 2) {
                 v.push_back(stof(line));
                 map["Department A: "] = v;
