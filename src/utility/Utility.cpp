@@ -163,7 +163,7 @@ std::map<std::string, std::vector<float>> readHospitalData(
             } 
 
             if (lineNo >= 2 && lineNo <= numDepartment + 1) {
-                
+                int count = 0;
             } else if (lineNo == numDepartment + 2) {
                 v.push_back(stof(line));
                 map["Department A: "] = v;
