@@ -132,6 +132,58 @@ json Utility::readInputData(const char *fileName)
     return data;
 }
 
+// read Hospital data
+std::map<std::string, std::vector<float>> readHospitalData(
+    const char *fileName) 
+{
+    map<std::string, std::vector<float>> map;
+    ifstream input(fileName);
+
+    std::string delimiter = " ";    
+
+    int lineNo = 1;
+    int numDepartment;
+    for (std::string line; getline(input, line);) 
+    {
+        vector<float> v;
+        if (lineNo == 1) {
+            numDepartment = stoi(line);
+            v.push_back(stof(line));
+            map["numDepartment"] = v;
+        } else {
+            size_t pos = 0;
+            std::string token;
+            int count = 0;
+            std::string departmentId;
+
+            while ((pos = line.find(delimiter)) != std::string::npos) {
+                token = line.substr(0, pos);
+                v.push_back(stof(token));
+                line.erase(0, pos + delimiter.length());
+            } 
+
+            if (lineNo >= 2 && lineNo <= numDepartment + 1) {
+                
+            } else if (lineNo == numDepartment + 2) {
+                v.push_back(stof(line));
+                map["Department A: "] = v;
+            } else if (lineNo == numDepartment + 3) {
+                v.push_back(stof(line));
+                map["AGV start: "] = v;
+            } else if (lineNo == numDepartment + 4) {
+                v.push_back(stof(line));
+                map["AGV end: "] = v;
+            } else {
+                v.push_back(stof(line));
+                map["Land: "] = v;
+            }
+        }
+        lineNo++;
+    }
+    return map;
+}
+
+
 // write end file
 void Utility::writeResult(const char *fileName, string name, int mode,
                           std::vector<AGV *> agvs,
