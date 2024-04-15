@@ -133,4 +133,6 @@ class Personnel : public Pedestrian {
     Walkability walkability;
 };
 
+std::vector<Ward> generateWard();
+
 #endif
