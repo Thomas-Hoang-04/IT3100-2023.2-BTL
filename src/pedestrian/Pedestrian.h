@@ -107,8 +107,11 @@ public:
     double getVelocity() const { return velocity; }
     Ward getStart() const { return start; }
     Ward getEnd() const { return end; }
-    std::vector<std::vector<double>> getEvents() { 
-        std::vector<std::vector<double>> eventPerEmotion(6, std::vector<double>(20));
+    std::vector<Ward> getJourney() const { return journey; }
+    Personality getPersonality() const { return personality; }
+    Emotion getEmotion() const { return emotion; }
+    std::vector<vector<double>> getEvents() { 
+        std::vector<vector<double>> eventPerEmotion(6, std::vector<double>(20));
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
                 eventPerEmotion[i][j] = events[j].getIntensity()[i];
@@ -116,6 +119,9 @@ public:
         }
         return eventPerEmotion;
     }
+    double getWalkingTime() const { return walkingTime; }
+    double getDistance() const { return distance; }
+    double getAge() const { return age; }
     AGVEvent getImpactOfAGV() const { return impactOfAGV; }
     Point getTempPoints() const { return tempPoints; }
     double getWardCount() const { return wardCount; }
