@@ -242,5 +242,55 @@
         "maxValue": 3600
       }
     }
+  },
+
+  "impactOfAGV": {
+    "description": "distribution of AGV's impact for all pedestrians",
+    "scope": 3,
+    "distribution": {
+      "children": {
+        "description": "normal distribution",
+        "numberOfValues": 100,
+        "minValue": 0.01,
+        "maxValue": 0.99,
+        "numberOfFields": 6
+      },
+      "ALKW": {
+        "description": "normal distribution",
+        "numberOfValues": 100,
+        "minValue": -0.29,
+        "maxValue": 0.99,
+        "numberOfFields": 6
+      },
+      "BFGMEN": {
+        "description": "normal distribution",
+        "numberOfValues": 100,
+        "minValue": -0.99,
+        "maxValue": 0.29,
+        "numberOfFields": 6
+      },
+      "Elder": {
+        "description": "normal distribution",
+        "numberOfValues": 100,
+        "minValue": -0.99,
+        "maxValue": 0.29,
+        "numberOfFields": 6
+      },
+      "Blinder": {
+        "description": "normal distribution",
+        "numberOfValues": 100,
+        "minValue": -0.99,
+        "maxValue": 0.29,
+        "numberOfFields": 6
+      },
+      "Other": {
+        "description": "normal distribution",
+        "numberOfValues": 100,
+        "minValue": -0.99,
+        "maxValue": 0.99,
+        "numberOfFields": 6
+      }
+    }
   }
 }
+
