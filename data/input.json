@@ -13,7 +13,7 @@
   },
   "numOfAgents": {
     "description": "Number of agents",
-    "value": 50
+    "value": 300
   },
   "TDDegree": {
     "description": "T-Distribution' degree of freedom",
@@ -86,27 +86,33 @@
     "description": "velocity distribution of pedestrians",
     "distribution": {
       "noDisabilityNoOvertaking": {
-        "description": "Percentage of agents (No disability, without overtaking behavior)",
+        "description": "No disability, without overtaking behavior agents",
+        "percentage": 22,
         "velocity": 1.24
       },
       "noDisabilityOvertaking": {
-        "description": "Percentage of agents (No disability, with overtaking behavior)",
+        "description": "No disability, with overtaking behavior",
+        "percentage": 5,
         "velocity": 2.48
       },
       "crutches": {
-        "description": "Percentage of agents (Walking with crutches)",
+        "description": "Walking with crutches agents",
+        "percentage": 17,
         "velocity": 0.94
       },
       "sticks": {
-        "description": "Percentage of agents (Walking with sticks)",
+        "description": "Walking with sticks agents",
+        "percentage": 22,
         "velocity": 0.81
       },
       "wheelchair": {
-        "description": "Percentage of agents (Wheelchairs)",
+        "description": "Wheelchairs agents",
+        "percentage": 17,
         "velocity": 0.69
       },
       "blind": {
-        "description": "Percentage of agents (The blind)",
+        "description": "The blind agents",
+        "percentage": 17,
         "velocity": 0.52
       },
       "normal": {
