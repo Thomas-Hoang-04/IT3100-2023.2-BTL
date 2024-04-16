@@ -92,7 +92,7 @@
       },
       "noDisabilityOvertaking": {
         "description": "No disability, with overtaking behavior",
-        "percentage": 5,
+        "percentage": 17,
         "velocity": 2.48
       },
       "crutches": {
@@ -112,7 +112,7 @@
       },
       "blind": {
         "description": "The blind agents",
-        "percentage": 17,
+        "percentage": 5,
         "velocity": 0.52
       },
       "normal": {
