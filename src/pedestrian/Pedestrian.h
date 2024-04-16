@@ -95,7 +95,7 @@ private:
     double velocity;
     Personality personality;
     Emotion emotion;
-    Event events;
+    vector<Event> events;
     double walkingTime;
     double distance;
     double age;
@@ -116,7 +116,7 @@ public:
                 eventPerEmotion[i][j] = events[j].getIntensity()[i];
             }
         }
-        return result;
+        return eventPerEmotion;
     }
     double getWalkingTime() const { return walkingTime; }
     double getDistance() const { return distance; }
@@ -130,7 +130,7 @@ public:
     void setJourney(std::vector<Ward> journey) { this -> journey = journey; }
     void setVelocity(double velocity) { this -> velocity = velocity; }
     void setPersonality(Personality personality) { this -> personality = personality; }
-    void setEvents(Event events) { this -> events = events; }
+    void setEvents(vector<Event> events) { this -> events = events; }
 };
 
 class Patient : public Pedestrian {
