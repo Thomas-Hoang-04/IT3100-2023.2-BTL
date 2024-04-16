@@ -95,9 +95,10 @@ private:
     double velocity;
     Personality personality;
     Emotion emotion;
-    vector<Event> events;
+    std::vector<Event> events;
     double walkingTime;
     double distance;
+    double wardCount;
     double age;
     AGVEvent impactOfAGV;
     Point tempPoints;
@@ -109,8 +110,8 @@ public:
     std::vector<Ward> getJourney() const { return journey; }
     Personality getPersonality() const { return personality; }
     Emotion getEmotion() const { return emotion; }
-    vector<vector<double>> getEvents() { 
-        vector<vector<double>> eventPerEmotion(6, vector<double>(20));
+    std::vector<vector<double>> getEvents() { 
+        std::vector<vector<double>> eventPerEmotion(6, std::vector<double>(20));
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
                 eventPerEmotion[i][j] = events[j].getIntensity()[i];
@@ -123,6 +124,7 @@ public:
     double getAge() const { return age; }
     AGVEvent getImpactOfAGV() const { return impactOfAGV; }
     Point getTempPoints() const { return tempPoints; }
+    double getWardCount() const { return wardCount; }
 
     void setID(int ID) { this -> ID = ID; } 
     void setStart(Ward start) { this -> start = start; }
@@ -130,7 +132,13 @@ public:
     void setJourney(std::vector<Ward> journey) { this -> journey = journey; }
     void setVelocity(double velocity) { this -> velocity = velocity; }
     void setPersonality(Personality personality) { this -> personality = personality; }
-    void setEvents(vector<Event> events) { this -> events = events; }
+    void setEvents(std::vector<Event> events) { this -> events = events; }
+    void setWalkingTime(double walkingTime) { this -> walkingTime = walkingTime; }
+    void setDistance(double distance) { this -> distance = distance; }
+    void setAge(double age) { this -> age = age; }
+    void setImpactOfAGV(AGVEvent impactOfAGV) { this -> impactOfAGV = impactOfAGV; }
+    void setTempPoints(Point tempPoints) { this -> tempPoints = tempPoints; }
+    void setWardCount(double wardCount) { this -> wardCount = wardCount; }
 };
 
 class Patient : public Pedestrian {
