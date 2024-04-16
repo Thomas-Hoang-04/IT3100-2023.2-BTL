@@ -109,8 +109,20 @@ public:
     std::vector<Ward> getJourney() const { return journey; }
     Personality getPersonality() const { return personality; }
     Emotion getEmotion() const { return emotion; }
-
-    // Đoạn này chưa xong do chưa hoàn thành phương thức Get của các biến còn lại
+    vector<vector<double>> getEvents() { 
+        vector<vector<double>> eventPerEmotion(6, vector<double>(20));
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 20; j++) {
+                eventPerEmotion[i][j] = events[j].getIntensity()[i];
+            }
+        }
+        return result;
+    }
+    double getWalkingTime() const { return walkingTime; }
+    double getDistance() const { return distance; }
+    double getAge() const { return age; }
+    AGVEvent getImpactOfAGV() const { return impactOfAGV; }
+    Point getTempPoints() const { return tempPoints; }
 
     void setID(int ID) { this -> ID = ID; } 
     void setStart(Ward start) { this -> start = start; }
