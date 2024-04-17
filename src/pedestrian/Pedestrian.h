@@ -16,6 +16,7 @@ private:
     std::vector<Point> wardCoordinates;
 
 public:
+    Ward() {}
     Ward(std::string wardName, Point entrance, Point exit, std::vector<Point> wardCoordinates) : wardName(wardName), entrance(entrance), exit(exit), wardCoordinates(wardCoordinates) {}
 
     std::string getWardName() const { return wardName; }
