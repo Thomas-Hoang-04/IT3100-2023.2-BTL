@@ -32,18 +32,19 @@ int randomInt(int min, int max) {
 
 vector<Ward> generateWard() {
     vector<Ward> wards;
-    ifstream f("data/hospital.txt");
+    ifstream file("data/hospital.txt");
     string line;
-    if (f.is_open()) {
-        getline(f, line);
+    if (file.is_open()) {
+        getline(file, line);
         for (int i = 2; i < 11; i++) {
             vector<Point> edges;
             Point mid1, mid2, p1, p2, p3, p4;
             double width;
             string ward_name;
-            if (!getline(f, line)) {
+            if (!getline(file, line)) {
                 break;
             }
+
             istringstream iss(line);
             iss >> mid1.x >> mid1.y;
             iss >> mid2.x >> mid2.y;
@@ -67,9 +68,9 @@ vector<Ward> generateWard() {
             edges.push_back(p4);
 
             wards.push_back(Ward(ward_name, mid1, mid2, edges));
-            cout << "Current wards count: " << wards.size() << endl;
+            // cout << "Current wards count: " << wards.size() << endl;
         }
-        f.close();
+        file.close();
     }
     else {
         cout << "File not found" << endl;
@@ -77,14 +78,14 @@ vector<Ward> generateWard() {
     return wards;
 }
 
-vector<Event> eventGen() {
+vector<Event> generateEvents() {
     vector<Event> events;
-	ifstream f("data/event_distribution.txt");
+	ifstream file("data/event_distribution.txt");
 	string line;
 
-    if (f.is_open()) {
-        while (getline(f, line)) {
-            Event e;
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            Event event;
             double value;
             istringstream iss(line);
             vector<double> intensity;
@@ -92,11 +93,11 @@ vector<Event> eventGen() {
 				intensity.push_back(value);
 			}
             cout << "Event creation successful" << endl;
-            e.setIntensity(intensity);
-            e.setTime(0);
-            events.push_back(e);
+            event.setIntensity(intensity);
+            event.setTime(0);
+            events.push_back(event);
         }
-		f.close();
+		file.close();
 	}
     else {
 		cout << "File not found" << endl;
@@ -104,7 +105,7 @@ vector<Event> eventGen() {
 	return events;
 }
 
-void pedestrianGen() {
+void generatePedestrians() {
     json inputData;
     inputData = Utility::readInputData("data/input.json");
     int ID = 0;
@@ -123,9 +124,9 @@ void pedestrianGen() {
     int pedestrianCountPerCat[] = { 100, 113, 87 };
     vector<Pedestrian> pedestrians;
     
-    vector<Event> allEvents = eventGen();
+    vector<Event> allEvents = generateEvents();
     vector<int> allTimeDistances;
-    ifstream f2("data/age_distribution.txt"); 
+    ifstream f2("data/time_distances_distribution.txt"); 
     string line; 
     while (getline(f2, line)) {
         allTimeDistances.push_back(stoi(line));
@@ -153,68 +154,68 @@ void pedestrianGen() {
 
             switch (i) {
                 case 0: {
-                    Personnel p;
+                    Personnel personnel;
                     vector<Event> events;
-                    p.setID(ID);
+                    personnel.setID(ID);
 
                     int age;
                     while (age <= 23 || age >= 61) {
                         age = ages[randomInt(0, ages.size() - 1)];
                     }
-                    p.setAge(age);
+                    personnel.setAge(age);
 
-                    p.setPersonality(open);
-                    p.setVelocity(ID <= 66 ? NoDisabilityNoOvertaking_velocity : NoDisabilityOvertaking_velocity);
-                    p.setWardCount(3);
+                    personnel.setPersonality(open);
+                    personnel.setVelocity(ID <= 66 ? NoDisabilityNoOvertaking_velocity : NoDisabilityOvertaking_velocity);
+                    personnel.setWardCount(3);
 
                     for (int k = 0; k < 20; k++) {
-                        Event e = allEvents[randomInt(0, allEvents.size() - 1)];
-                        e.setTime(allTimeDistances[randomInt(0, allTimeDistances.size() - 1)]);
-                        events.push_back();
+                        Event event = allEvents[randomInt(0, allEvents.size() - 1)];
+                        event.setTime(allTimeDistances[randomInt(0, allTimeDistances.size() - 1)]);
+                        events.push_back(event);
                     }
-                    p.setEvents(events);
+                    personnel.setEvents(events);
 
-                    pedestrians.push_back(p);
+                    pedestrians.push_back(personnel);
                     break;
                 }
                 case 1: {
-                    Visitor v;
+                    Visitor visitor;
                     vector<Event> events;
-                    v.setID(ID);
+                    visitor.setID(ID);
 
-                    v.setAge(ages[randomInt(0, ages.size() - 1)]);
-                    v.setPersonality(ID <= 150 ? open : (v.getAge() < 11 ? open : neurotic));
-                    v.setVelocity(ID <= 168 ? (ID <= 117 ? NoDisabilityOvertaking_velocity : Crutches_velocity) : Sticks_velocity);
-                    v.setWardCount(1); 
+                    visitor.setAge(ages[randomInt(0, ages.size() - 1)]);
+                    visitor.setPersonality(ID <= 150 ? open : (visitor.getAge() < 11 ? open : neurotic));
+                    visitor.setVelocity(ID <= 168 ? (ID <= 117 ? NoDisabilityOvertaking_velocity : Crutches_velocity) : Sticks_velocity);
+                    visitor.setWardCount(1); 
 
                     for (int k = 0; k < 20; k++) {
-                        Event e = allEvents[randomInt(0, allEvents.size() - 1)];
-                        e.setTime(allTimeDistances[randomInt(0, allTimeDistances.size() - 1)]);
-                        events.push_back();
+                        Event event = allEvents[randomInt(0, allEvents.size() - 1)];
+                        event.setTime(allTimeDistances[randomInt(0, allTimeDistances.size() - 1)]);
+                        events.push_back(event);
                     }
-                    v.setEvents(events);
+                    visitor.setEvents(events);
 
-                    pedestrians.push_back(v);
+                    pedestrians.push_back(visitor);
                     break;
                 }
                 case 2: {
-				    Patient pt; 
+				    Patient patient; 
 				    vector<Event> events;
-				    pt.setID(ID); 
+				    patient.setID(ID); 
 
-				    pt.setAge(ages[randomInt(0, ages.size() - 1)]); 
-                    pt.setPersonality(pt.getAge() < 11 ? open : neurotic);  
-                    pt.setVelocity(ID <= 51 ? Wheelchair_velocity : Blind_velocity); 
-                    pt.setWardCount(3);
+				    patient.setAge(ages[randomInt(0, ages.size() - 1)]); 
+                    patient.setPersonality(patient.getAge() < 11 ? open : neurotic);  
+                    patient.setVelocity(ID <= 51 ? Wheelchair_velocity : Blind_velocity); 
+                    patient.setWardCount(3);
 
                     for (int k = 0; k < 20; k++) {
-					    Event e = allEvents[randomInt(0, allEvents.size() - 1)];
-					    e.setTime(allTimeDistances[randomInt(0, allTimeDistances.size() - 1)]);
-					    events.push_back();
+					    Event event = allEvents[randomInt(0, allEvents.size() - 1)];
+					    event.setTime(allTimeDistances[randomInt(0, allTimeDistances.size() - 1)]);
+					    events.push_back(event);
 				    }
-				    pt.setEvents(events); 
+				    patient.setEvents(events); 
 
-				    pedestrians.push_back(pt);
+				    pedestrians.push_back(patient);
 				    break;      
                 }
             }
@@ -255,7 +256,7 @@ void pedestrianGen() {
 }
 
 int main() {
-	pedestrianGen();
+	generatePedestrians();
 	return 0;
 }
 
