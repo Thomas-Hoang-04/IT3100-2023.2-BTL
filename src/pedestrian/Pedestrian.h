@@ -150,7 +150,6 @@ class Visitor : public Pedestrian {
 };
 
 class Personnel : public Pedestrian {
-    Walkability walkability;
 };
 
 std::vector<Ward> generateWard();
