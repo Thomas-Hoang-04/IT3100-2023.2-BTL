@@ -113,8 +113,8 @@ public:
     std::vector<Ward> getJourney() const { return journey; }
     Personality getPersonality() const { return personality; }
     Emotion getEmotion() const { return emotion; }
-    std::vector<vector<double>> getEvents() { 
-        std::vector<vector<double>> eventPerEmotion(6, std::vector<double>(20));
+    std::vector<std::vector<double>> getEvents() { 
+        std::vector<std::vector<double>> eventPerEmotion(6, std::vector<double>(20));
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
                 eventPerEmotion[i][j] = events[j].getIntensity()[i];

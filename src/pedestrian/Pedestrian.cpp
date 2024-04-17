@@ -1,6 +1,10 @@
+/* Be advised: Turn all relative path into absolute path for all path in this file before running 
+All new code requiring file access must use absolute path */
+
+// Path format for json.hpp: ../../lib/nlohmann/json.hpp
+
 #include "Pedestrian.h"
 #include "lib/nlohmann/json.hpp"
-#include "utility/Utility.h"
 
 #include <iostream>
 #include <vector>
@@ -68,7 +72,6 @@ vector<Ward> generateWard() {
             edges.push_back(p4);
 
             wards.push_back(Ward(ward_name, mid1, mid2, edges));
-            // cout << "Current wards count: " << wards.size() << endl;
         }
         file.close();
     }
@@ -92,7 +95,6 @@ vector<Event> generateEvents() {
             while (iss >> value) {
 				intensity.push_back(value);
 			}
-            cout << "Event creation successful" << endl;
             event.setIntensity(intensity);
             event.setTime(0);
             events.push_back(event);
@@ -106,8 +108,8 @@ vector<Event> generateEvents() {
 }
 
 void generatePedestrians() {
-    json inputData;
-    inputData = Utility::readInputData("data/input.json");
+    ifstream file("data/input.json");
+    json inputData = json::parse(file);
     int ID = 0;
 
     double deviation = randomDouble(1 - (double)inputData["experimentalDeviation"]["value"] / 100, 1 + (double)inputData["experimentalDeviation"]["value"] / 100);
@@ -216,7 +218,7 @@ void generatePedestrians() {
 				    patient.setEvents(events); 
 
 				    pedestrians.push_back(patient);
-				    break;      
+				    break;
                 }
             }
         }
@@ -232,7 +234,6 @@ void generatePedestrians() {
         j["ID"] = pedestrians[i].getID();
         j["age"] = pedestrians[i].getAge();
         j["velocity"] = pedestrians[i].getVelocity();
-        
         j["personality"]["name"] = pedestrians[i].getPersonality().getLambda() == 1 ? "open" : "neurotic";
         j["personality"]["lambda"] = pedestrians[i].getPersonality().getLambda(); 
         j["personality"]["positiveEmotionThreshold"] = pedestrians[i].getPersonality().getPositiveEmotionThreshold();
