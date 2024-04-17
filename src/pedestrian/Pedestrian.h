@@ -103,6 +103,8 @@ private:
     AGVEvent impactOfAGV;
     Point tempPoints;
 public:
+    Pedestrian() {}
+
     int getID() const { return ID; }
     double getVelocity() const { return velocity; }
     Ward getStart() const { return start; }
@@ -143,13 +145,16 @@ public:
 
 class Patient : public Pedestrian {
     Walkability walkability;
+    using Pedestrian::Pedestrian;
 };
 
 class Visitor : public Pedestrian {
     Walkability walkability;
+    using Pedestrian::Pedestrian;
 };
 
 class Personnel : public Pedestrian {
+    using Pedestrian::Pedestrian;
 };
 
 std::vector<Ward> generateWard();
