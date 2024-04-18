@@ -282,7 +282,6 @@ vector<vector<double>> eventImpact(Pedestrian pedestrian, int timeHorizon) {
     double sum = 0;
     string positiveOrNegative;
     
-
     for (int i = 0; i < 6; ++i) {
         allEmotions[i].push_back(events[i][0] + allEmotions[i][0]*exp(-lambda) + allEmotions[i][0]);
     }
