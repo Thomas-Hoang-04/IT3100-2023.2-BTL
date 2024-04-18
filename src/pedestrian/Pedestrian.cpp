@@ -11,9 +11,6 @@ All new code requiring file access must use absolute path */
 #include <cmath>
 #include <fstream>
 #include <random>
-#include <matplotlibcpp.h> /* Need to install the third party library named matplotibcpp*/
-
-namespace plt = matplotlibcpp;
 
 using namespace std;
 
@@ -256,85 +253,6 @@ void generatePedestrians() {
 
     cout << "Pedestrian generation successful" << endl;
     return;
-}
-
-vector<vector<double>> eventImpact(Pedestrian pedestrian, int timeHorizon) {
-    vector<vector<double>> events = pedestrian.getEvents();
-    double lambda = pedestrian.getPersonality().getLambda();
-    vector<int> times(19);
-    for (int i = 0; i < 19; ++i) {
-        times[i] = randomInt(4, 10);
-    }
-
-    vector<vector<double>> allEmotions = {
-        {pedestrian.getEmotion().getPleasure()},
-        {pedestrian.getEmotion().getSurprise()},
-        {pedestrian.getEmotion().getAnger()},
-        {pedestrian.getEmotion().getFear()},
-        {pedestrian.getEmotion().getHate()},
-        {pedestrian.getEmotion().getSad()}
-    };
-
-    vector<int> when;
-    int lastTime = 0;
-    int index = 0;
-    vector<double> temp(6, 0.0);
-    double sum = 0;
-    string positiveOrNegative;
-    
-
-    for (int i = 0; i < 6; ++i) {
-        allEmotions[i].push_back(events[i][0] + allEmotions[i][0]*exp(-lambda) + allEmotions[i][0]);
-    }
-
-    for (int i = 2; i < 20; ++i) {
-        for (int j = 0; j < 6; ++j) {
-            temp[j] = allEmotions[j][i - 1];
-        }
-
-        if (i - lastTime == times[index]) {
-            index++;
-            lastTime = i;
-            for (int j = 0; j < 6; ++j) {
-                sum += events[j][index];
-            }
-            positiveOrNegative = (sum > 0) ? "(+)" : "(-)";
-            when.push_back(i);
-        }
-
-        for (int j = 0; j < 6; ++j) {
-            allEmotions[j].push_back(temp[j] + allEmotions[j][i - 1]*exp(-lambda) + events[j][index]);
-        }
-    }
-
-    vector<string> emotions = {"pleasure", "surprise", "anger", "fear", "hate", "sad"};
-    for (int i = 0; i < 6; ++i) {
-        plt::plot(allEmotions[i], {{"label", "Way " + emotions[i]}});
-    }
-
-    plt::title("The number of events happening to this individual: " + to_string(index + 1) + " " + positiveOrNegative);
-    plt::xlabel("Time: ");
-    plt::ylabel("Value: ");
-    plt::legend();
-
-    double positiveEmotionThreshold = 0.6;
-    double negativeEmotionThreshold = -0.4;
-
-    plt::hlines(positiveEmotionThreshold, 0, 16, {{"colors", "black"}, {"linestyles", "dashed"}});
-    plt::hlines(negativeEmotionThreshold, 0, 16, {{"colors", "black"}, {"linestyles", "dashed"}});
-    plt::text(8, 0.7, "Positive Threshold", {{"color", "black"}, {"ha", "center"}, {"va", "bottom"}});
-    plt::text(8, -0.7, "Negative Threshold", {{"color", "black"}, {"ha", "center"}, {"va", "bottom"}});
-
-    double minY = *min_element(allEmotions.begin(), allEmotions.end());
-    double maxY = *max_element(allEmotions.begin(), allEmotions.end());
-
-    for (auto num : when) {
-        plt::vlines(num, minY, maxY, {{"colors", "black"}, {"linestyles", "dashed"}});
-    }
-
-    plt::save("figure.pdf");
-    return 0;
-
 }
 
 int main() {
