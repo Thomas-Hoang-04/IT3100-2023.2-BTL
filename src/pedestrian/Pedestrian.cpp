@@ -337,10 +337,6 @@ vector<vector<double>> eventImpact(Pedestrian pedestrian, int timeHorizon) {
 
 }
 
-int main() {
-	generatePedestrians();
-	return 0;
-}
 
 
 
