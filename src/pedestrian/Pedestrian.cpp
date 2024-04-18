@@ -255,10 +255,6 @@ void generatePedestrians() {
     return;
 }
 
-int main() {
-	generatePedestrians();
-	return 0;
-}
 
 
 
