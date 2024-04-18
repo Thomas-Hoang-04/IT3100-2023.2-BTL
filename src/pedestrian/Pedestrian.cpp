@@ -132,7 +132,6 @@ void generatePedestrians() {
     vector<Event> allEvents = generateEvents();
     vector<int> allTimeDistances;
     ifstream f2("data/time_distances_distribution.txt"); 
-    string line; 
     while (getline(f2, line)) {
         allTimeDistances.push_back(stoi(line));
     }
