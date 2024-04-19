@@ -297,5 +297,111 @@
         "numberOfFields": 6
       }
     }
+  },
+
+  "leavingDistribution": {
+    "description": "distribution of start walking",
+    "distribution": {
+      "A": {
+          "description": "at Administration Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "0",
+              "end": "1000",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "B": {
+          "description": "at Brain Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "13",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "E": {
+          "description": "at E Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "16",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "F": {
+          "description": "at F Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "15",
+              "end": "400",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "G": {
+          "description": "at G Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "13",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "L": {
+          "description": "at L Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "13",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "M": {
+          "description": "at M Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "13",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "N": {
+          "description": "at N Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "13",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "K": {
+          "description": "at K Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "13",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      },
+      "W": {
+          "description": "at W Center",
+          "normal": {
+              "description": "normal distribution",
+              "start": "13",
+              "end": "700",
+              "timeStep": "2",
+              "std_dev": 1
+          }
+      }
+    }
   }
 }
