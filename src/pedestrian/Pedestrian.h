@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 
-
 struct Point {
     double x, y;
 };
@@ -82,7 +81,7 @@ enum class Walkability {
     noDisability,
     crutches,
     sticks,
-    wheelchairs,
+    wheelchair,
     blind
 };
 
@@ -91,6 +90,7 @@ class AGVEvent : Event {};
 class Pedestrian {
 private:
     int ID;
+    std::string role;
     Ward start, end;
     std::vector<Ward> journey;
     double velocity;
@@ -128,6 +128,7 @@ public:
     AGVEvent getImpactOfAGV() const { return impactOfAGV; }
     Point getTempPoints() const { return tempPoints; }
     double getWardCount() const { return wardCount; }
+    std::string getRole() const { return role; }
 
     void setID(int ID) { this -> ID = ID; } 
     void setStart(Ward start) { this -> start = start; }
@@ -142,16 +143,29 @@ public:
     void setImpactOfAGV(AGVEvent impactOfAGV) { this -> impactOfAGV = impactOfAGV; }
     void setTempPoints(Point tempPoints) { this -> tempPoints = tempPoints; }
     void setWardCount(double wardCount) { this -> wardCount = wardCount; }
+    void setRole(std::string role) { this -> role = role; }
 };
 
 class Patient : public Pedestrian {
+private:
     Walkability walkability;
+
+public:
     using Pedestrian::Pedestrian;
+
+    Walkability getWalkability() const { return walkability; }
+    void setWalkability(Walkability walkability) { this -> walkability = walkability; }
 };
 
 class Visitor : public Pedestrian {
+private:
     Walkability walkability;
+
+public:
     using Pedestrian::Pedestrian;
+
+    Walkability getWalkability() const { return walkability; }
+    void setWalkability(Walkability walkability) { this -> walkability = walkability; }
 };
 
 class Personnel : public Pedestrian {

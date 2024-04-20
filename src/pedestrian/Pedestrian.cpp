@@ -4,7 +4,7 @@ All new code requiring file access must use absolute path */
 // Path format for json.hpp: ../../lib/nlohmann/json.hpp
 
 #include "Pedestrian.h"
-#include "lib/nlohmann/json.hpp"
+#include "../../lib/nlohmann/json.hpp"
 
 #include <iostream>
 #include <vector>
@@ -32,11 +32,11 @@ int randomInt(int min, int max) {
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(min, max);
 	return dis(gen);
-}   
+}
 
 vector<Ward> generateWard() {
     vector<Ward> wards;
-    ifstream file("data/hospital.txt");
+    ifstream file("/home/thomas/BTL/IT3100-2023.2-BTL/data/hospital.txt");
     string line;
     if (file.is_open()) {
         getline(file, line);
@@ -83,7 +83,7 @@ vector<Ward> generateWard() {
 
 vector<Event> generateEvents() {
     vector<Event> events;
-	ifstream file("data/event_distribution.txt");
+	ifstream file("/home/thomas/BTL/IT3100-2023.2-BTL/data/event_distribution.txt");
 	string line;
 
     if (file.is_open()) {
@@ -108,13 +108,14 @@ vector<Event> generateEvents() {
 }
 
 void generatePedestrians() {
-    ifstream file("data/input.json");
+    ifstream file("/home/thomas/BTL/IT3100-2023.2-BTL/data/input.json");
     json inputData = json::parse(file);
+
     int ID = 0;
 
     double deviation = randomDouble(1 - (double)inputData["experimentalDeviation"]["value"] / 100, 1 + (double)inputData["experimentalDeviation"]["value"] / 100);
     vector<double> ages;
-    ifstream f1("data/age_distribution.txt");
+    ifstream f1("/home/thomas/BTL/IT3100-2023.2-BTL/data/age_distribution.txt");
     string line;
     while (getline(f1, line)) {
         ages.push_back(stod(line));
@@ -125,10 +126,12 @@ void generatePedestrians() {
     // Distribution per role (Personnel, Visitor, Patient): 100, 113, 87  
     int pedestrianCountPerCat[] = { 100, 113, 87 };
     vector<Pedestrian> pedestrians;
+
+    vector<string> wardName = { "A", "B", "E", "F", "G", "L", "M", "N", "K", "W" };
     
     vector<Event> allEvents = generateEvents();
     vector<int> allTimeDistances;
-    ifstream f2("data/time_distances_distribution.txt"); 
+    ifstream f2("/home/thomas/BTL/IT3100-2023.2-BTL/data/time_distances_distribution.txt"); 
     while (getline(f2, line)) {
         allTimeDistances.push_back(stoi(line));
     }
@@ -158,6 +161,7 @@ void generatePedestrians() {
                     Personnel personnel;
                     vector<Event> events;
                     personnel.setID(ID);
+                    personnel.setRole("Personnel");
 
                     int age;
                     while (age <= 23 || age >= 61) {
@@ -183,11 +187,13 @@ void generatePedestrians() {
                     Visitor visitor;
                     vector<Event> events;
                     visitor.setID(ID);
+                    visitor.setRole("Visitor");
 
                     visitor.setAge(ages[randomInt(0, ages.size() - 1)]);
                     visitor.setPersonality(ID <= 150 ? open : (visitor.getAge() < 11 ? open : neurotic));
                     visitor.setVelocity(ID <= 168 ? (ID <= 117 ? NoDisabilityOvertaking_velocity : Crutches_velocity) : Sticks_velocity);
-                    visitor.setWardCount(1); 
+                    visitor.setWalkability(ID <= 168 ? (ID <= 117 ? Walkability::noDisability : Walkability::crutches) : Walkability::sticks);
+                    visitor.setWardCount(1);
 
                     for (int k = 0; k < 20; k++) {
                         Event event = allEvents[randomInt(0, allEvents.size() - 1)];
@@ -202,11 +208,13 @@ void generatePedestrians() {
                 case 2: {
 				    Patient patient; 
 				    vector<Event> events;
-				    patient.setID(ID); 
+				    patient.setID(ID);
+                    patient.setRole("Patient");
 
 				    patient.setAge(ages[randomInt(0, ages.size() - 1)]); 
                     patient.setPersonality(patient.getAge() < 11 ? open : neurotic);  
                     patient.setVelocity(ID <= 51 ? Wheelchair_velocity : Blind_velocity); 
+                    patient.setWalkability(ID <= 51 ? Walkability::wheelchair : Walkability::blind);
                     patient.setWardCount(3);
 
                     for (int k = 0; k < 20; k++) {
@@ -214,7 +222,7 @@ void generatePedestrians() {
 					    event.setTime(allTimeDistances[randomInt(0, allTimeDistances.size() - 1)]);
 					    events.push_back(event);
 				    }
-				    patient.setEvents(events); 
+				    patient.setEvents(events);
 
 				    pedestrians.push_back(patient);
 				    break;
@@ -223,7 +231,7 @@ void generatePedestrians() {
         }
     }
 
-    ofstream outf("data/pedestrian.txt", ios::app);
+    ofstream outf("/home/thomas/BTL/IT3100-2023.2-BTL/data/pedestrian_1.txt", ios::app);
     if (!outf.is_open()) {
         cout << "File creation failed" << endl;
         return;
@@ -231,6 +239,10 @@ void generatePedestrians() {
     for (int i = 0; i < pedestrians.size(); i++) {
         json j;
         j["ID"] = pedestrians[i].getID();
+        j["role"] = pedestrians[i].getRole();
+        if (pedestrians[i].getRole() == "Personnel") {
+            j["workplace"] = wardName[randomInt(0, wardName.size() - 1)];
+        }
         j["age"] = pedestrians[i].getAge();
         j["velocity"] = pedestrians[i].getVelocity();
         j["personality"]["name"] = pedestrians[i].getPersonality().getLambda() == 1 ? "open" : "neurotic";
@@ -253,6 +265,11 @@ void generatePedestrians() {
 
     cout << "Pedestrian generation successful" << endl;
     return;
+}
+
+int main() {
+    generatePedestrians();
+    return 0;
 }
 
 
