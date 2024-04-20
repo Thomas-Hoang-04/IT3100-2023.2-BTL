@@ -332,7 +332,7 @@ vector<vector<double>> eventImpact(Pedestrian pedestrian, int timeHorizon) {
     }
 
     plt::save("figure.pdf");
-    return 0;
+    return allEmotions;
 
 }
 
