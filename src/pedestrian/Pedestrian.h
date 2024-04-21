@@ -90,7 +90,6 @@ class AGVEvent : Event {};
 class Pedestrian {
 private:
     int ID;
-    std::string role;
     Ward start, end;
     std::vector<Ward> journey;
     double velocity;
@@ -99,9 +98,9 @@ private:
     std::vector<Event> events;
     double walkingTime;
     double distance;
-    double wardCount;
+    int wardCount;
     double age;
-    std::vector<AGVEvent> impactOfAGV;
+    AGVEvent impactOfAGV;
     Point tempPoints;
 public:
     Pedestrian() {}
@@ -125,10 +124,9 @@ public:
     double getWalkingTime() const { return walkingTime; }
     double getDistance() const { return distance; }
     double getAge() const { return age; }
-    std::vector<AGVEvent> getImpactOfAGV() const { return impactOfAGV; }
+    AGVEvent getImpactOfAGV() const { return impactOfAGV; }
     Point getTempPoints() const { return tempPoints; }
-    double getWardCount() const { return wardCount; }
-    std::string getRole() const { return role; }
+    int getWardCount() const { return wardCount; }
 
     void setID(int ID) { this -> ID = ID; } 
     void setStart(Ward start) { this -> start = start; }
@@ -140,10 +138,9 @@ public:
     void setWalkingTime(double walkingTime) { this -> walkingTime = walkingTime; }
     void setDistance(double distance) { this -> distance = distance; }
     void setAge(double age) { this -> age = age; }
-    void setImpactOfAGV(std::vector<AGVEvent> impactOfAGV) { this -> impactOfAGV = impactOfAGV; }
+    void setImpactOfAGV(AGVEvent impactOfAGV) { this -> impactOfAGV = impactOfAGV; }
     void setTempPoints(Point tempPoints) { this -> tempPoints = tempPoints; }
     void setWardCount(double wardCount) { this -> wardCount = wardCount; }
-    void setRole(std::string role) { this -> role = role; }
 };
 
 class Patient : public Pedestrian {

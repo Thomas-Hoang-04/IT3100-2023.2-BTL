@@ -74,6 +74,7 @@ vector<Ward> generateWard() {
             wards.push_back(Ward(ward_name, mid1, mid2, edges));
         }
         file.close();
+        cout << "Ward generation successful" << endl;
     }
     else {
         cout << "File not found" << endl;
@@ -100,6 +101,7 @@ vector<Event> generateEvents() {
             events.push_back(event);
         }
 		file.close();
+        cout << "Event generation successful" << endl;
 	}
     else {
 		cout << "File not found" << endl;
@@ -127,7 +129,10 @@ void generatePedestrians() {
     int pedestrianCountPerCat[] = { 100, 113, 87 };
     vector<Pedestrian> pedestrians;
 
-    vector<string> wardName = { "A", "B", "E", "F", "G", "L", "M", "N", "K", "W" };
+    vector<Ward> wards = generateWard();
+    Ward wardA;
+    wardA.setWardName("A");
+    wards.push_back(wardA);
     
     vector<Event> allEvents = generateEvents();
     vector<int> allTimeDistances;
@@ -161,7 +166,7 @@ void generatePedestrians() {
                     Personnel personnel;
                     vector<Event> events;
                     personnel.setID(ID);
-                    personnel.setRole("Personnel");
+                    Ward temp;
 
                     do {
                         personnel.setAge(ages[randomInt(0, ages.size() - 1)]);
@@ -169,7 +174,12 @@ void generatePedestrians() {
 
                     personnel.setPersonality(open);
                     personnel.setVelocity(ID <= 66 ? NoDisabilityNoOvertaking_velocity : NoDisabilityOvertaking_velocity);
+
+
                     personnel.setWardCount(3);
+                    temp = wards[randomInt(0, wards.size() - 1)];
+                    personnel.setStart(temp);
+                    personnel.setEnd(temp);
 
                     for (int k = 0; k < 20; k++) {
                         Event event = allEvents[randomInt(0, allEvents.size() - 1)];
@@ -185,13 +195,15 @@ void generatePedestrians() {
                     Visitor visitor;
                     vector<Event> events;
                     visitor.setID(ID);
-                    visitor.setRole("Visitor");
 
                     visitor.setAge(ages[randomInt(0, ages.size() - 1)]);
                     visitor.setPersonality(ID <= 150 ? open : (visitor.getAge() < 11 ? open : neurotic));
                     visitor.setVelocity(ID <= 168 ? (ID <= 117 ? NoDisabilityOvertaking_velocity : Crutches_velocity) : Sticks_velocity);
                     visitor.setWalkability(ID <= 168 ? (ID <= 117 ? Walkability::noDisability : Walkability::crutches) : Walkability::sticks);
+
                     visitor.setWardCount(1);
+                    visitor.setStart(wards.back());
+                    visitor.setEnd(wards.back());
 
                     for (int k = 0; k < 20; k++) {
                         Event event = allEvents[randomInt(0, allEvents.size() - 1)];
@@ -207,13 +219,15 @@ void generatePedestrians() {
 				    Patient patient; 
 				    vector<Event> events;
 				    patient.setID(ID);
-                    patient.setRole("Patient");
 
 				    patient.setAge(ages[randomInt(0, ages.size() - 1)]); 
                     patient.setPersonality(patient.getAge() < 11 ? open : neurotic);  
-                    patient.setVelocity(ID <= 51 ? Wheelchair_velocity : Blind_velocity); 
-                    patient.setWalkability(ID <= 51 ? Walkability::wheelchair : Walkability::blind);
+                    patient.setVelocity(ID <= 285 ? Wheelchair_velocity : Blind_velocity); 
+                    patient.setWalkability(ID <= 285 ? Walkability::wheelchair : Walkability::blind);
+                    
                     patient.setWardCount(3);
+                    patient.setStart(wards.back());
+                    patient.setEnd(wards.back());
 
                     for (int k = 0; k < 20; k++) {
 					    Event event = allEvents[randomInt(0, allEvents.size() - 1)];
@@ -229,7 +243,7 @@ void generatePedestrians() {
         }
     }
 
-    ofstream outf("data/pedestrian_1.txt", ios::trunc);
+    ofstream outf("data/pedestrian.txt", ios::trunc);
     if (!outf.is_open()) {
         cout << "File creation failed" << endl;
         return;
@@ -237,12 +251,12 @@ void generatePedestrians() {
     for (int i = 0; i < pedestrians.size(); i++) {
         json j;
         j["ID"] = pedestrians[i].getID();
-        j["role"] = pedestrians[i].getRole();
-        if (pedestrians[i].getRole() == "Personnel") {
-            j["workplace"] = wardName[randomInt(0, wardName.size() - 1)];
-        }
         j["age"] = pedestrians[i].getAge();
+        j["wardCount"] = pedestrians[i].getWardCount();
         j["velocity"] = pedestrians[i].getVelocity();
+        j["start"] = pedestrians[i].getStart().getWardName();
+        j["end"] = pedestrians[i].getEnd().getWardName();
+
         j["personality"]["name"] = pedestrians[i].getPersonality().getLambda() == 1 ? "open" : "neurotic";
         j["personality"]["lambda"] = pedestrians[i].getPersonality().getLambda(); 
         j["personality"]["positiveEmotionThreshold"] = pedestrians[i].getPersonality().getPositiveEmotionThreshold();
@@ -264,6 +278,7 @@ void generatePedestrians() {
     cout << "Pedestrian generation successful" << endl;
     return;
 }
+
 
 
 
