@@ -101,7 +101,7 @@ private:
     double distance;
     double wardCount;
     double age;
-    AGVEvent impactOfAGV;
+    std::vector<AGVEvent> impactOfAGV;
     Point tempPoints;
 public:
     Pedestrian() {}
@@ -125,7 +125,7 @@ public:
     double getWalkingTime() const { return walkingTime; }
     double getDistance() const { return distance; }
     double getAge() const { return age; }
-    AGVEvent getImpactOfAGV() const { return impactOfAGV; }
+    std::vector<AGVEvent> getImpactOfAGV() const { return impactOfAGV; }
     Point getTempPoints() const { return tempPoints; }
     double getWardCount() const { return wardCount; }
     std::string getRole() const { return role; }
@@ -140,7 +140,7 @@ public:
     void setWalkingTime(double walkingTime) { this -> walkingTime = walkingTime; }
     void setDistance(double distance) { this -> distance = distance; }
     void setAge(double age) { this -> age = age; }
-    void setImpactOfAGV(AGVEvent impactOfAGV) { this -> impactOfAGV = impactOfAGV; }
+    void setImpactOfAGV(std::vector<AGVEvent> impactOfAGV) { this -> impactOfAGV = impactOfAGV; }
     void setTempPoints(Point tempPoints) { this -> tempPoints = tempPoints; }
     void setWardCount(double wardCount) { this -> wardCount = wardCount; }
     void setRole(std::string role) { this -> role = role; }
