@@ -36,7 +36,7 @@ int randomInt(int min, int max) {
 
 vector<Ward> generateWard() {
     vector<Ward> wards;
-    ifstream file("/home/thomas/BTL/IT3100-2023.2-BTL/data/hospital.txt");
+    ifstream file("data/hospital.txt");
     string line;
     if (file.is_open()) {
         getline(file, line);
@@ -83,7 +83,7 @@ vector<Ward> generateWard() {
 
 vector<Event> generateEvents() {
     vector<Event> events;
-	ifstream file("/home/thomas/BTL/IT3100-2023.2-BTL/data/event_distribution.txt");
+	ifstream file("data/event_distribution.txt");
 	string line;
 
     if (file.is_open()) {
@@ -108,14 +108,14 @@ vector<Event> generateEvents() {
 }
 
 void generatePedestrians() {
-    ifstream file("/home/thomas/BTL/IT3100-2023.2-BTL/data/input.json");
+    ifstream file("data/input.json");
     json inputData = json::parse(file);
 
     int ID = 0;
 
     double deviation = randomDouble(1 - (double)inputData["experimentalDeviation"]["value"] / 100, 1 + (double)inputData["experimentalDeviation"]["value"] / 100);
     vector<double> ages;
-    ifstream f1("/home/thomas/BTL/IT3100-2023.2-BTL/data/age_distribution.txt");
+    ifstream f1("data/age_distribution.txt");
     string line;
     while (getline(f1, line)) {
         ages.push_back(stod(line));
@@ -131,7 +131,7 @@ void generatePedestrians() {
     
     vector<Event> allEvents = generateEvents();
     vector<int> allTimeDistances;
-    ifstream f2("/home/thomas/BTL/IT3100-2023.2-BTL/data/time_distances_distribution.txt"); 
+    ifstream f2("data/time_distances_distribution.txt"); 
     while (getline(f2, line)) {
         allTimeDistances.push_back(stoi(line));
     }
@@ -163,11 +163,9 @@ void generatePedestrians() {
                     personnel.setID(ID);
                     personnel.setRole("Personnel");
 
-                    int age;
-                    while (age <= 23 || age >= 61) {
-                        age = ages[randomInt(0, ages.size() - 1)];
-                    }
-                    personnel.setAge(age);
+                    do {
+                        personnel.setAge(ages[randomInt(0, ages.size() - 1)]);
+                    } while (personnel.getAge() < 23 || personnel.getAge() > 61);
 
                     personnel.setPersonality(open);
                     personnel.setVelocity(ID <= 66 ? NoDisabilityNoOvertaking_velocity : NoDisabilityOvertaking_velocity);
@@ -231,7 +229,7 @@ void generatePedestrians() {
         }
     }
 
-    ofstream outf("/home/thomas/BTL/IT3100-2023.2-BTL/data/pedestrian_1.txt", ios::app);
+    ofstream outf("data/pedestrian_1.txt", ios::trunc);
     if (!outf.is_open()) {
         cout << "File creation failed" << endl;
         return;
@@ -267,10 +265,7 @@ void generatePedestrians() {
     return;
 }
 
-int main() {
-    generatePedestrians();
-    return 0;
-}
+
 
 
 
