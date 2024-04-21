@@ -34,6 +34,8 @@ private:
     double time;
     std::vector<double> intensity;
 public:
+    Event() {}
+    
     double getTime() const { return time; }
     std::vector<double> getIntensity() const { return intensity; }
 
@@ -85,7 +87,9 @@ enum class Walkability {
     blind
 };
 
-class AGVEvent : Event {};
+class AGVEvent : public Event {
+    using Event::Event;
+};
 
 class Pedestrian {
 private:

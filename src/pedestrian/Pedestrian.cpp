@@ -109,6 +109,7 @@ vector<Event> generateEvents() {
 	return events;
 }
 
+// bai 3
 void generatePedestrians() {
     ifstream file("data/input.json");
     json inputData = json::parse(file);
@@ -279,6 +280,84 @@ void generatePedestrians() {
     return;
 }
 
+// bai 7
+vector<vector<double>> getImpactSamples(int samples, double min, double max) {
+    vector<vector<double>> impacts;
+
+    for (int i = 0; i < samples; i++) {
+        vector<double> impact(6);
+        for (int j = 0; j < 6; j++) {
+            impact[j] = lround(randomDouble(min, max) * 100) / 100.0;
+        }
+        impacts.push_back(impact);
+    }
+
+    return impacts;
+}
+
+vector<vector<double>> impactOfAGV(vector<Pedestrian> pedestrians) {
+    vector<vector<double>> impacts;
+
+    int children = 0, ALKW = 0, BFGMEN = 0, elder = 0, blinder = 0, others = 0;
+
+    for (int i = 0; i < pedestrians.size(); i++) {
+        Pedestrian p = pedestrians[i];
+        if (p.getAge() < 12) children++;
+        else if ((p.getWardCount() == 3 && p.getVelocity() > 1) || p.getWardCount() == 1) {
+            string workplace = p.getStart().getWardName();
+            if (workplace == "A" || workplace == "L" || workplace == "K" || workplace == "W") ALKW++;
+            else BFGMEN++;
+        }
+        else if (p.getAge() > 60) elder++;
+        else if (p.getVelocity() < 0.58) blinder++;
+        else others++;
+    }
+
+    vector<vector<double>> childrenImpacts = getImpactSamples(children, 0.01, 0.99);
+    vector<vector<double>> ALKWImpacts = getImpactSamples(ALKW, -0.29, 0.99);
+    vector<vector<double>> BFGMENImpacts = getImpactSamples(BFGMEN, -0.99, 0.29);
+    vector<vector<double>> elderImpacts = getImpactSamples(elder, -0.99, 0.29);
+    vector<vector<double>> blinderImpacts = getImpactSamples(blinder, -0.99, 0.29);
+    vector<vector<double>> othersImpacts = getImpactSamples(others, -0.99, 0.99);
+
+    for (int i = 0; i < pedestrians.size(); i++) {
+        Pedestrian p = pedestrians[i];
+        AGVEvent agv_event;
+        if (p.getAge() < 12) {
+            agv_event.setIntensity(childrenImpacts.back());
+            childrenImpacts.pop_back();
+        }
+        else if ((p.getWardCount() == 3 && p.getVelocity() > 1) || p.getWardCount() == 1) {
+            string workplace = p.getStart().getWardName();
+            if (workplace == "A" || workplace == "L" || workplace == "K" || workplace == "W") {
+                agv_event.setIntensity(ALKWImpacts.back());
+                ALKWImpacts.pop_back();
+            }
+            else {
+                agv_event.setIntensity(BFGMENImpacts.back());
+                BFGMENImpacts.pop_back();
+            }
+        }
+        else if (p.getAge() > 60) {
+            agv_event.setIntensity(elderImpacts.back());
+            elderImpacts.pop_back();
+        }
+        else if (p.getVelocity() < 0.58) {
+            agv_event.setIntensity(blinderImpacts.back());
+            blinderImpacts.pop_back();
+        }
+        else {
+            agv_event.setIntensity(othersImpacts.back());
+            othersImpacts.pop_back();
+        }
+        p.setImpactOfAGV(agv_event);
+        impacts.push_back(agv_event.getIntensity());
+    }
+
+    cout << "Impact of AGV generation successful" << endl;
+
+    return impacts;
+}
 
 
 
