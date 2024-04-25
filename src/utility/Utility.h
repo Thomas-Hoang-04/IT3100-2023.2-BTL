@@ -24,6 +24,8 @@ namespace Utility
 
     json readInputData(const char *fileName);
 
+    std::map<std::string, std::vector<float>> readHospitalData(const char *fileName);
+
     void writeResult(
         const char *fileName, std::string name, int mode, std::vector<AGV *> data,
         std::vector<json> juncDataList,
