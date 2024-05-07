@@ -11,6 +11,8 @@ All new code requiring file access must use absolute path */
 #include <cmath>
 #include <fstream>
 #include <random>
+#include <tuple>
+#include <numeric>
 
 using namespace std;
 
@@ -32,6 +34,13 @@ int randomInt(int min, int max) {
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(min, max);
 	return dis(gen);
+}
+
+double randomNormal(double mean, double std_dev) {
+    random_device rd;
+    mt19937 gen(rd());
+    normal_distribution<double> dis(mean, std_dev);
+    return dis(gen);
 }
 
 vector<Ward> generateWard() {
@@ -279,6 +288,44 @@ void generatePedestrians() {
     cout << "Pedestrian generation successful" << endl;
     return;
 }
+
+// bai 4
+vector<pair<Ward, int>> checkWard (vector<Ward> allWards, int triple, int single) {
+    vector<pair<Ward, int>> result;
+
+    ifstream file("data/input.json");
+    json inputData = json::parse(file);
+
+    int numOfAgents = inputData["numOfAgents"];
+
+    if (triple + single != numOfAgents) {
+        cout << "Error!" << endl;
+        return result;
+    }
+
+    int total = triple * 3 + single;
+    int mean = total / allWards.size();
+    int std_dev = mean / 3;
+    vector<int> values;
+
+    for (int i = 0; i < allWards.size(); ++i) {
+        values.push_back(static_cast<int>(randomNormal(mean, std_dev)));
+    }
+
+    int sumOfValues = accumulate(values.begin(), values.end(), 0);
+    int difference = total - sumOfValues;
+    for (int i = 0; i < allWards.size() && difference != 0; ++i) {
+        int sign = difference > 0 ? 1 : -1;
+        values[i] += sign;
+        difference -= sign;
+    }
+
+    for (int i = 0; i < allWards.size(); ++i) {
+        result.emplace_back(make_pair(allWards[i], values[i]));
+    }
+
+    return result;
+} 
 
 // bai 7
 vector<vector<double>> getImpactSamples(int samples, double min, double max) {
