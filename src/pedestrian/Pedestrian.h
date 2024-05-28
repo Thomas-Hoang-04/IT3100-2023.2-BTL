@@ -97,6 +97,7 @@ private:
     Ward start, end;
     std::vector<Ward> journey;
     double velocity;
+    std::string role;
     Personality personality;
     Emotion emotion;
     std::vector<Event> events;
@@ -131,6 +132,7 @@ public:
     AGVEvent getImpactOfAGV() const { return impactOfAGV; }
     Point getTempPoints() const { return tempPoints; }
     int getWardCount() const { return wardCount; }
+    std::string getRole() const { return role; }
 
     void setID(int ID) { this -> ID = ID; } 
     void setStart(Ward start) { this -> start = start; }
@@ -145,6 +147,7 @@ public:
     void setImpactOfAGV(AGVEvent impactOfAGV) { this -> impactOfAGV = impactOfAGV; }
     void setTempPoints(Point tempPoints) { this -> tempPoints = tempPoints; }
     void setWardCount(double wardCount) { this -> wardCount = wardCount; }
+    void setRole(std::string role) { this->role = role; }
 };
 
 class Patient : public Pedestrian {
